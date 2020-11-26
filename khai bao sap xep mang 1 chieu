@@ -1,0 +1,37 @@
+int main()
+{   
+    int size=0;
+    int a[size];
+    int key,j;
+    
+    printf("moi nhap so phan tu n = ");
+    scanf("%d",&size);
+    
+    for(int i=0;i<size;i++){
+        printf("a[%d] = ",i);
+        scanf("%d",&a[i]);
+    }
+    
+    printf("============================\n");
+    printf("mang da nhap \n");
+    
+    for(int i=0;i<size;i++){
+        printf("a[%d] = %d\n",i,a[i]);
+    }    
+    for(int i=1;i<size;i++){
+        key = a[i];
+        j=i-1;
+        while(j>=0 && a[j]>key){
+            a[j+1]=a[j];
+            j=j-1;
+        }
+        a[j+1]=key;
+    }
+    
+    printf("============================\n");
+    printf("mang da sap xep\n");
+    for(int i =0;i<size;i++){
+        printf("a[%d] =  %d\n",i,a[i]);
+    }
+    return 0;
+}
