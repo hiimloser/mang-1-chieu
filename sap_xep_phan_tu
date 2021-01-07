@@ -1,0 +1,88 @@
+#include<stdio.h>
+
+int main()
+{
+	int n;
+	// cau 1
+	do
+	{
+		printf("n = ");
+		scanf("%d",&n);
+	}while(n<2||n>15);
+	//cau 2 + 3
+	int a[200];
+	int k1=0,k2=0;
+    int sum1=0,sum2=0;
+	for(int i=0;i<=n-1;i++)
+	{
+		a[i]=3*i+5;
+		printf("%d\t",a[i]);
+	}
+	printf("\nso chia het cho 2:\n");
+	for(int i=0;i<=n-1;i++)
+	{
+		a[i]=3*i+5;
+		if(a[i]%2==0)
+		{
+			printf("%d\t",a[i]);
+			sum1=sum1+a[i];
+			k1++;
+		}
+	}
+	printf("\nso chia het cho 5:\n");
+	for(int i=0;i<=n-1;i++)
+	{
+		a[i]=3*i+5;
+		if(a[i]%5==0)
+		{
+			printf("%d\t",a[i]);
+			sum2=sum2+a[i];
+			k2++;
+		}
+	}
+	if(k1!=0||k2!=0)
+	{
+		printf("\ntong so chia het cho 2 = %d",sum1);
+		printf("\ntbc cac so chia het cho 2 = %d",sum1/k1);
+		printf("\ntong so chia het cho 5 = %d",sum2);
+		printf("\ntbc cac so chia het cho 5 = %d",sum2/k2);
+	}
+	
+	// cau 4
+	printf("\n");
+	
+	int g1,g2;
+	for(int i=0;i<=n-1;i++)
+	{
+		a[i]=3*i+5;
+		if(a[i]%4==0)
+		{
+			printf("\na[%d]= %d",i,a[i]);
+			g1=i;	
+			break ;																			
+		}
+	}
+	for(int i=n-1;i>=0;i--)
+	{
+		a[i]=0;
+		a[i]=3*i+5;
+		if(a[i]%5==0)
+		{
+			printf("\na[%d]= %d",i,a[i]);
+		    g2=i;
+			break;	
+		}
+	}
+	
+	int temp=a[g1];
+	a[g1]=a[g2];
+	a[g2]=temp;
+	printf("\n");
+	printf("mang sau khi doi cho:\n");
+	for(int i=0;i<n;i++)
+	{
+		printf("%d\t",a[i]);
+	}
+	
+	return 0;
+}
