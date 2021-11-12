@@ -1,0 +1,189 @@
+#include <stdio.h>
+
+void add(int a[], int *n) {
+	// Mang a[] co toi da 100 phan tu
+	if (*n >= 100) {
+		printf("Array is full!!\n");
+		return;
+	}
+	int x;
+	// Nhap gia tri can them vao cuoi mang a[]
+	printf("Enter value: ");
+	scanf("%d", &x);
+	// Them gia tri vua nhap vao cuoi mang a[]
+	a[(*n)++] = x; 
+}
+
+void display(int a[], int n) {
+	int i;
+	// Hien thi mang a[] ra man hinh
+	for (i = 0; i < n; i++)
+		printf("%d ", a[i]);
+	printf("\n");
+} 
+
+int search(int a[], int n, int value) {
+	int i;
+	// tim kiem gia tri value trong mang a[]
+	for (i = 0; i < n; i++)
+		if (a[i] == value)
+			return i;
+	return -1;
+}
+
+void delValue(int a[], int *n, int value) {
+	// Xoa gia tri value dau tien trong a[] neu tim thay
+	int i, id = search(a, *n, value);
+	if (id >= 0) {
+		for (i = id; i < (*n)-1; i++)
+			a[i] = a[i+1];
+		(*n)--;
+		printf("Removed first value %d in array!!\n", value);
+	} else printf("%d is not in the array!!\n", value);
+}
+
+int delIndex(int a[], int *n, int index) {
+	if (index < 0 || index >= (*n)) return 1<<31;
+	// xoa phan tu tai chi so index trong a[]
+	int i, temp = a[index];
+	for (i = index; i < (*n)-1; i++)
+		a[i] = a[i+1];
+	(*n)--;
+	return temp;
+}
+
+// swap gia tri cua x va y
+void swap(int *x, int *y) {
+	int temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+void delInRange(int a[], int *n, int min, int max) {
+	// xoa cac phan tu co gia tri trong doan [min, max] cua a[]
+	if (min > max) swap(&min, &max);
+	int i, j = 0;
+	while (a[j] < min || a[j] > max) j++;
+	for (i = j+1; i < (*n); i++)
+		if (a[i] < min || a[i] > max) 
+			a[j++] = a[i];
+	printf("Removed %d elements in range [%d, %d]!!\n", (*n)-j, min, max);
+	(*n) = j;
+}
+
+void sortArr(int a[], int n, int type) {
+	// sort a[] theo type
+	// type = 0: sort giam dan
+	// type != 0: sort tang dan
+	int i, j, flag;
+	if (type) {
+		for (i = 0; i < n; i++) {
+			flag = i;
+			for (j = i + 1; j < n; j++)
+				if (a[flag] > a[j])
+					flag = j;
+			swap(&a[i], &a[flag]);
+		}
+	} else {
+		for (i = 0; i < n; i++) {
+			flag = i;
+			for (j = i + 1; j < n; j++)
+				if (a[flag] < a[j])
+					flag = j;
+			swap(&a[i], &a[flag]);
+		}
+	}
+	printf("Successful sorted!!\n");
+}
+
+void insertArr(int a[], int *n, int index, int value) {
+	if (*n >= 100) {
+		printf("Array is full!!\n");
+		return;
+	}
+	if (index < 0 || index >= (*n)) {
+		printf("Wrong index!!\n");
+		return;
+	}
+	// them gia tri value vao vi tri index trong a[]
+	int i;
+	for (i = (*n); i > index; i--)
+		a[i] = a[i-1];
+	a[index] = value;
+	(*n)++;
+	printf("successfully inserted!!\n");
+}
+
+int main() {
+	int type, a[200], n = 0, value, value2;
+	while (1) {
+		printf("MENU:\n\
+1: Add new element\n\
+2: display array\n\
+3: searching element in array\n\
+4: Delete value in array\n\
+5: Delete element at index\n\
+6: Delete some elements in range\n\
+7: Sort element in array\n\
+8: Insert an element to array\n\
+9: Quit\n\
+Enter your selection: ");
+		scanf("%d", &type);
+		if (type == 9) break;
+		switch (type) {
+			case 1:
+				add(a, &n);
+				break;
+			case 2:
+				display(a, n);
+				break;
+			case 3:
+				printf("Enter value: ");
+				scanf("%d", &value);
+				int f = search(a, n, value);
+				if (f != -1)
+					printf("The first index of %d in the array is: %d\n", value, f);
+				else printf("%d is not in the array!!\n");
+				break;
+			case 4:
+				printf("Enter value: ");
+				scanf("%d", &value);
+				delValue(a, &n, value);
+				break;
+			case 5:
+				printf("Enter index: ");
+				scanf("%d", &value);
+				f = delIndex(a, &n, value);	
+				if (f != (1<<31)) printf("The deleted value at index %d is : %d\n", value, f);
+				else printf("Wrong index!!\n");			
+				break;
+			case 6:
+				// Nhap min va max cua doan gia tri muon xoa
+				printf("Enter range: ");
+				scanf("%d%d", &value, &value2);
+				delInRange(a, &n, value, value2);
+				break;
+			case 7:
+				// type = 0: sort giam dan
+				// type != 0: sort tang dan
+				printf("Type:\n");
+				printf("\tType = 0: Sort descending.\n");
+				printf("\tType != 0: Sort ascending.\n");
+				printf("Enter type: ");
+				scanf("%d", &value);
+				sortArr(a, n, value);
+				break;
+			case 8:
+				printf("Enter index: ");
+				scanf("%d", &value);
+				printf("Enter value: ");
+				scanf("%d", &value2);
+				insertArr(a, &n, value, value2);
+				break;
+			default: printf("Please choose again!!\n");	
+		}
+		system("pause");
+		printf("\n");
+	}
+	return 0;
+}
