@@ -1,0 +1,224 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#define MAX 100
+#define k -2^31
+int i,j;
+void add(int a[], int *n)
+{
+	for(i=0;i<*n;i++)
+	{
+		printf("a[%d] = ",i);
+		scanf("%d",&a[i]);
+	}
+}
+void display(int a[], int n)
+{
+	printf("\nlist :\n");
+	for(i=0;i<n;i++)
+	{
+		printf("%5d",a[i]);
+	}
+}
+int search(int a[], int n, int value)
+{
+	int index,count=0;
+	for(i=0;i<n;i++)
+	{
+		if(a[i]==value)
+		{
+			index=i;
+			count++;
+			break;
+		}
+	}
+	if(count==0)
+	{
+		return -1;
+	}
+	else
+	{
+		return index;
+	}
+}
+
+void delValue(int a[], int *n, int value)
+{
+	int i, id = search(a, *n, value);
+	if (id >= 0) 
+	{
+		for (i = id; i < (*n)-1; i++)
+		{
+			a[i] = a[i+1];
+		}	
+		(*n)--;
+		display(a,*n);
+	} 
+	else 
+	{
+		printf("%d is not in the array!!\n", value);
+	}
+}
+void delIndex(int a[], int *n, int index)
+{
+	if(index>=0&&index<=*n)
+	{
+	    if(index < 0)
+		{
+	        index = 0;
+	    }
+	    else if(index >= *n)
+		{
+	        index = *(n)-1;
+	    }
+	    for( i = index; i < *(n)-1; i++)
+		{
+	        a[i] = a[i+1];
+	    }
+	    --*n;
+	    display(a,*n);
+	}
+	else
+	{
+		display(a,*n);
+	}
+}
+void sort (int a[], int n, int type)
+{
+	if(type==0)
+	{
+		for(i=0;i<n;i++)
+		{
+			for(j=i+1;j<n;j++)
+			{
+				if(a[i]<a[j])
+				{
+					int temp = a[i];
+					a[i]=a[j];
+					a[j]=temp;
+				}
+			}
+		}
+	}
+	else
+	{
+		for(i=0;i<n;i++)
+		{
+			for(j=i+1;j<n;j++)
+			{
+				if(a[i]>a[j])
+				{
+					int temp = a[i];
+					a[i]=a[j];
+					a[j]=temp;
+				}
+			}
+		}
+	}
+}
+void insert(int a[], int *n, int index, int value)
+{
+	if(index>=0&&index<=*n)
+	{
+	    if(index < 0){
+	        index= 0;
+	    }
+	    else if(index > *n){
+	        index= *n;
+	    }
+	    for( i = *n; i > index; i--)
+		{
+	        a[i] = a[i-1];
+	    }
+	    a[index] = value;
+	    ++*n;
+		display(a,*n);
+	}
+	else
+	{
+		display(a,*n);
+	}
+}
+void delInRange(int a[], int *n, int min, int max)
+{
+	while (a[j] < min || a[j] > max) j++;
+	for (i = j+1; i < (*n); i++)
+		if (a[i] < min || a[i] > max) 
+			a[j++] = a[i];
+	(*n) = j;
+	display(a,*n);
+}
+int main()
+{
+	int select,n,sea,value,index,type,index1,value1,min,max;
+	int a[MAX];
+	do
+	{
+//		system("cls");
+		printf("\n");
+		printf("\t\t------------Menu------------\n");
+		printf("\t\t[1] Add new element\n");
+		printf("\t\t[2] Display array\n");
+		printf("\t\t[3] Searching element in array\n");
+		printf("\t\t[4] Delete value in array\n");
+		printf("\t\t[5] Delete element at index\n");
+		printf("\t\t[6] Delete some elements in range\n");
+		printf("\t\t[7] Sort element in array\n");
+		printf("\t\t[8] Insert an element to array\n");
+		printf("\t\t[9] Quit\n");
+		printf("\t\t----------------------------\n");
+		printf("\tselect : ");
+		scanf("%d",&select);
+		switch(select)
+		{
+			case 1:
+				do
+				{
+					printf("Total number of elements : ");
+					scanf("%d",&n);
+				}while(n<0||n>MAX);
+				add(a,&n);
+				break;
+			case 2:
+				display(a,n);
+				break;
+			case 3:
+				printf("Enter the value you want to find : ");
+				scanf("%d",&sea);
+				printf("location %d : %d",sea,search(a,n,sea));
+				break;
+			case 4:
+				printf("Enter the value you want to delete : ");
+				scanf("%d",&value);
+				delValue(a,&n,value);
+				break;
+			case 5:
+				printf("Enter location : ");
+				scanf("%d",&index);
+				delIndex(a,&n,index);
+				break;
+			case 6:
+				printf("Enter value max : ");
+				scanf("%d",&max);
+				printf("Enter value min : ");
+				scanf("%d",&min);
+				delInRange(a,&n,min,max);
+				break;
+			case 7:
+				printf("Enter type : ");
+				scanf("%d",&type);
+				sort(a,n,type);
+				display(a,n);
+				break;
+			case 8:
+				printf("Enter index : ");
+				scanf("%d",&index1);
+				printf("Enter value : ");
+				scanf("%d",&value1);
+				insert(a,&n,index1,value1);
+				break;
+		}
+	}
+	while(select!=9);
+	return 0;
+}
